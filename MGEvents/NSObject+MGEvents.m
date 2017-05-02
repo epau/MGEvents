@@ -193,10 +193,12 @@ static char *MGDeallocActionKey = "MGDeallocActionKey";
   dispatch_once(&onceToken, ^{
     runloopRetainer = NSMutableArray.new;
   });
-  [runloopRetainer addObject:self];
-  dispatch_async(dispatch_get_main_queue(), ^{
-    [runloopRetainer removeObject:self];
-  });
+  if (self) {
+    [runloopRetainer addObject:self];
+    dispatch_async(dispatch_get_main_queue(), ^{
+      [runloopRetainer removeObject:self];
+    });
+  }
 }
 
 - (void)onChangeOfAny:(NSArray *)keypaths do:(MGBlock)block {
